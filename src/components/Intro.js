@@ -1,16 +1,22 @@
 import React, { useContext } from 'react'
+import { useHistory } from 'react-router-dom';
 import { UserContext } from '../utils/UserContext';
 
 export const Intro = () => {
 
     const {favMovie, setFavMovie} = useContext(UserContext);
+    const history = useHistory();
 
     const handleInputChange = (e) => {
         setFavMovie(e.target.value)
     }
 
+    let disabled = !favMovie ? true : false;
 
-    const disabled = true;
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        history.replace('/quiz')
+    }
 
     return (
         
@@ -43,8 +49,9 @@ export const Intro = () => {
                     <button 
                         className="form__button"
                         disabled={disabled} 
+                        onClick={ handleSubmit }
                         >
-                            Next
+                            Send
                     </button>  
                 </form>
 
