@@ -7,11 +7,15 @@ export const QuizApp = () => {
 
 
     const [favMovie, setFavMovie] = useState('')
+    const [selectedMovie, setSelectedMovie] = useState('')
+
 
     return (
         <UserContext.Provider value={{
             favMovie:favMovie,
-            setFavMovie:setFavMovie
+            setFavMovie:setFavMovie,
+            selectedMovie:selectedMovie,
+            setSelectedMovie:setSelectedMovie
         }}>
             <AppRouter />
         </UserContext.Provider>

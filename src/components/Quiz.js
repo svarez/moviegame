@@ -1,9 +1,10 @@
 import React from 'react'
-import { quizConstructor } from '../utils/quizConstructor'
+import { QuizConstructor } from '../utils/QuizConstructor'
 
 export const Quiz = () => {
 
-    const { title,  answers } = quizConstructor
+
+    const { title,  answers } = QuizConstructor()
 
     return (
         <>

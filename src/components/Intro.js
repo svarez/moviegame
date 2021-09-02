@@ -1,10 +1,11 @@
 import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom';
+import { QuizSelector } from '../utils/QuizConstructor';
 import { UserContext } from '../utils/UserContext';
 
 export const Intro = () => {
 
-    const {favMovie, setFavMovie} = useContext(UserContext);
+    const {favMovie, setFavMovie, setSelectedMovie} = useContext(UserContext);
     const history = useHistory();
 
     const handleInputChange = (e) => {
@@ -15,7 +16,16 @@ export const Intro = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        history.replace('/quiz')
+
+        QuizSelector(favMovie).then(movies=> {
+            if(movies.length > 0) {
+                const selectedMovie = movies.reduce((acc, ele) => (acc.vote_count > ele.vote_count) ? acc : ele );
+                setSelectedMovie(selectedMovie);
+                history.replace('/quiz')
+            } else {
+
+            }
+        })
     }
 
     return (
