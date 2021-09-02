@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { SearchMovieByName } from "../api/ApiSelector"
+import { GetCredits, GetSimilar, SearchMovieByName } from "../api/ApiSelector"
 import { getRandomElements } from "./getRandomElement";
 import { getRangeOfYears } from "./getRangeOfYears";
 import { UserContext } from "./UserContext";
@@ -41,7 +41,7 @@ export const QuizConstructor = () => {
 const getQuestion = (movie) => {
 
     const randomNumber = Math.floor(Math.random() * 3);
-    return releaseDateQuestion(movie);
+    return directorQuestion(movie);
           
     /*switch (randomQuestion) {
         case 'release_date':
@@ -65,15 +65,44 @@ const releaseDateQuestion = async (movie) => {
     const titleQuestion = `What year was ${title} released?`;
     const date = parseInt(release_date).toString();
     const randomYears = getRangeOfYears(parseInt(date));
-    const getAnswers = [...getRandomElements(randomYears, 3), date].sort(() => Math.random() - 0.5);
-    const correctAnswer = Object.keys(getAnswers).find(key => getAnswers[key] === date);
+    const answers = [...getRandomElements(randomYears, 3), date].sort(() => Math.random() - 0.5);
+    const correctAnswer = Object.keys(answers).find(key => answers[key] === date)
     
     const quiz = {
                 title: titleQuestion,
-                answers: getAnswers,
+                answers: answers,
+                correctAnswer: correctAnswer
+            }
+
+    return quiz
+
+}
+
+
+const directorQuestion = async (movie) => {
+
+    const { id, title } = movie;
+    const {crew} = await GetCredits(id)
+    const {name : director} = crew.find((crew) => crew.job === 'Director')
+    const {results : similarMovies} = await GetSimilar(id)
+    const similarDirectors = await Promise.all(similarMovies.map(async(similar)=>{
+
+            return await GetCredits(similar.id).then(async({crew})=>{
+                return crew.find(d => (d.job === 'Director' && d.name !== director)).name
+            });
+            
+    })
+    );
+    const titleQuestion = `Who directed the movie ${title}?`
+    const answers = [...getRandomElements(similarDirectors, 3), director].sort(() => Math.random() - 0.5)
+    const correctAnswer = Object.keys(answers).find(key => answers[key] === director)
+    
+    const quiz = {
+                title: titleQuestion,
+                answers: answers,
                 correctAnswer: correctAnswer
             };
 
-    return quiz;
+    return quiz
 
 }
