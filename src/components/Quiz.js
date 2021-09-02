@@ -1,23 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { QuizConstructor } from '../utils/QuizConstructor'
 
 export const Quiz = () => {
 
+    const [quiz, setQuiz] = useState({
+        title : '',
+        answers: [],
+        correctAnswer: ''
+    });
 
-    const { title,  answers } = QuizConstructor()
+    const newQuiz = QuizConstructor();
+
+    useEffect(() => {
+
+        newQuiz.then(q=>{
+            setQuiz(q)
+        })
+
+    }, []);
 
     return (
         <>
-            <div className="question">
+            {<div className="question">
                 <div className="question__title">
-                    <h1>{ title }</h1>
+                    <h1>{ quiz.title }</h1>
                 </div>
 
                 <div className="question__answers">
 
                     {
-                        Object.keys(answers).map(id=>
-                            <label className="radio radio-gradient" key={answers[id]}>
+                        Object.keys(quiz.answers).map(id=>
+                            <label className="radio radio-gradient" key={quiz.answers[id]}>
                                 <span className="radio__input">
                                     <input
                                         
@@ -26,14 +39,14 @@ export const Quiz = () => {
                                     /> 
                                 <span className="radio__control"></span>
                                 </span>
-                                <span className="radio__label">{answers[id]}</span>
+                                <span className="radio__label">{quiz.answers[id]}</span>
                             </label>
                         )
                     }
 
                 </div>
 
-            </div>
+            </div>}
             
         </>
     )
