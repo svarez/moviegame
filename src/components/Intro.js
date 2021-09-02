@@ -1,10 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { UserContext } from '../utils/UserContext';
 
 export const Intro = () => {
+
+    const {favMovie, setFavMovie} = useContext(UserContext);
+
+    const handleInputChange = (e) => {
+        setFavMovie(e.target.value)
+    }
+
 
     const disabled = true;
 
     return (
+        
         <>
             <div className="description">
                 <h1>Automatic quiz generator</h1>
@@ -21,6 +30,8 @@ export const Intro = () => {
                             name="favFilm" 
                             id="favFilm" 
                             required 
+                            value={ favMovie }
+                            onChange={ handleInputChange }
                         />
                         <label 
                             htmlFor="favFilm"
