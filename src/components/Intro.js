@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { QuizSelector } from '../utils/QuizConstructor';
 import { UserContext } from '../utils/UserContext';
@@ -7,9 +7,11 @@ export const Intro = () => {
 
     const {favMovie, setFavMovie, setSelectedMovie} = useContext(UserContext);
     const history = useHistory();
+    const [error, setError] = useState('')
 
     const handleInputChange = (e) => {
         setFavMovie(e.target.value)
+        setError('')
     }
 
     let disabled = !favMovie ? true : false;
@@ -23,7 +25,7 @@ export const Intro = () => {
                 setSelectedMovie(selectedMovie);
                 history.replace('/quiz')
             } else {
-
+                setError(`We couldn't find any title with the name of ${favMovie}`)
             }
         })
     }
@@ -64,6 +66,12 @@ export const Intro = () => {
                             Send
                     </button>  
                 </form>
+
+                { error &&
+                    (<div className="error-text">
+                        { error }
+                    </div>)
+                }
 
             </div>
             
