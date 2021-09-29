@@ -1,6 +1,6 @@
 import React from 'react'
 import { 
-    BrowserRouter as Router, 
+    HashRouter, 
     Redirect, 
     Route, 
     Switch 
@@ -16,7 +16,7 @@ import { Header } from '../components/ui/Header'
 
 export const AppRouter = () => {
     return (
-        <Router>
+        <HashRouter basename='/'>
 
             <div className="app-container">
 
@@ -34,6 +34,6 @@ export const AppRouter = () => {
 
             </div>
             
-        </Router>
+        </HashRouter>
     )
 }

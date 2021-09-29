@@ -1,6 +1,6 @@
 export const apiUrlsProvider = {
 
-    apiKey: '46148df4fc38413b50a6dd271e655a67',
+    apiKey: process.env.REACT_APP_API_KEY,
     baseUrlApi : 'https://api.themoviedb.org/3/',
     language: 'en-US',
     methodSearchMovie : 'search/movie',

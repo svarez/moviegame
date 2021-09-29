@@ -1,5 +1,5 @@
 html, body {
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
 }
 
@@ -22,5 +22,6 @@ body {
 }
 h1 {
   font-weight: 700;
-  font-size: clamp(5rem, 3vw, 10rem);
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 120%;
 }

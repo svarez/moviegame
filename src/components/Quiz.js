@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { GetNextQuestion } from '../utils/GetNextQuestion';
 import { quizConstructor } from '../utils/QuizConstructor'
 import { UserContext } from '../utils/UserContext';
+import { Percentages } from './ui/Percentages';
 
 export const Quiz = () => {
-
     
     const [correctAnswers, setCorrectAnswers] = useState(0)
     const [totalAnswers, setTotalAnswers] = useState(0)
-
-    
     const { selectedMovie } = useContext(UserContext);
+ 
+    const radioRef = useRef([])
 
     const history = useHistory();
     (!selectedMovie && history.replace('./intro'))
@@ -20,7 +20,7 @@ export const Quiz = () => {
         title : '',
         answers: [],
         correctAnswer: ''
-    });
+    })
 
     useEffect(() => {
 
@@ -29,45 +29,50 @@ export const Quiz = () => {
         })
         )
 
-    }, []);
+    }, [selectedMovie]);
 
     const handleChange = (e) => {
 
         setTotalAnswers( totalAnswers + 1 )
 
         if(quiz.correctAnswer === e.target.value) {
-
             setCorrectAnswers( correctAnswers + 1 )
-
+            radioRef.current[e.target.value].classList.add("correct-answer");
+        } else {
+            radioRef.current[quiz.correctAnswer].classList.add("correct-answer");
+            radioRef.current[e.target.value].classList.add("wrong-answer");
         }
 
-        setQuiz({
-            title : '',
-            answers: [],
-            correctAnswer: ''
-        })
-
-        GetNextQuestion(selectedMovie).then(movie=>{
-            quizConstructor(movie).then(p=>{
-                setQuiz(p)
+        setTimeout(()=>{
+    
+            setQuiz({
+                title : '',
+                answers: [],
+                correctAnswer: ''
             })
-        })
+    
+            GetNextQuestion(selectedMovie).then(movie=>{
+                quizConstructor(movie).then(p=>{
+                    setQuiz(p)
+                })
+            })
+
+
+        }, 1500);
     }
 
     return (
-        <>
+        <div className="quiz">
             {<div className="question">
 
                 <div className="fav-movie">
                     <h2>You chose {selectedMovie.title}</h2>
                 </div>
 
-                <div className="statics">
-                    <h3>Correct answers : 
-                        <span className="statics__correct-answers"> { correctAnswers }</span> 
-                        <span className="statics__total-answers"> / { totalAnswers }</span>
-                    </h3>   
-                </div>
+                <Percentages 
+                    correctAnswers={ correctAnswers }
+                    totalAnswers={ totalAnswers }
+                />
 
                 <div className="question__title">
                     <h1>{ quiz.title }</h1>
@@ -77,7 +82,11 @@ export const Quiz = () => {
 
                     {
                         Object.keys(quiz.answers).map(id=>
-                            <label className="radio radio-gradient" key={quiz.answers[id]}>
+                            <label 
+                                ref={el => radioRef.current[id] = el} 
+                                className="radio radio-gradient" 
+                                key={quiz.answers[id]}
+                            >
                                 <span className="radio__input">
                                     <input
                                         name='answer'
@@ -96,6 +105,6 @@ export const Quiz = () => {
 
             </div>}
             
-        </>
+        </div>
     )
 }

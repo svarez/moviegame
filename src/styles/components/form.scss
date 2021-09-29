@@ -9,9 +9,9 @@
     font-family: inherit;
     width: 100%;
     border: 0;
-    border-bottom: .2rem solid rgba(255,255,255,.5);
+    border-bottom: .2rem solid darken($colorFont, 50%);
     outline: 0;
-    font-size: 5rem;
+    font-size: clamp(2rem, 14vw, 5rem);
     font-weight: bold;
     color: #fff;
     padding: .7rem 0;
@@ -22,7 +22,7 @@
     color: transparent;
   }
   .form__field__input:placeholder-shown ~ .form__field__label {
-    font-size: 3rem;
+    font-size: clamp(2.2rem, 4vw, 3rem);
     cursor: text;
     bottom: 35%;
   }
@@ -33,22 +33,22 @@
     display: block;
     transition: 0.2s;
     font-size: 2rem;
-    color: rgba(255,255,255,.5);
+    color: darken($colorFont, 50%);
   }
   
   .form__field__input:focus {
     padding-bottom: .6rem;
     font-weight: 700;
     border-width: 3px;
-    border-color: #765cff;
+    border-color: $inputColor;
   }
   .form__field__input:focus ~ .form__field__label {
     position: absolute;
     bottom: 85%;
     display: block;
     transition: 0.2s;
-    font-size: 3rem;
-    color: #765cff;
+    font-size: clamp(1.8rem, 3.6vw, 2.4rem);
+    color: $inputColor;
     font-weight: 700;
   }
   
@@ -59,22 +59,22 @@
   
   
   .form__button {
-    border: .1rem solid rgba(255,255,255,.5);
+    border: .1rem solid darken($colorFont, 50%);
     background: none;
-    padding: 2rem 3rem;
+    padding: 1rem 2rem;
     margin-top: 2rem;
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     color: #fff;
     transition: .25s ease-in-out;
     float: right;
   }
   .form__button:disabled {
-    border: .1rem solid rgba(255,255,255,.3);
-    color: rgba(255,255,255,.3);
+    border: .1rem solid darken($colorFont, 70%);;
+    color: darken($colorFont, 70%);
   
   }
   .form__button:not([disabled]):hover {
-    border-color: rgba(255,255,255,1);
+    border-color: darken($colorFont, 90%);
   }
 
 
@@ -84,7 +84,7 @@
     grid-template-columns: min-content auto;
     grid-gap: 0.5em;
     font-size: 2.25rem;
-    color: #ffffff;
+    color: $colorFont;
     margin-bottom: 1rem;
   }
   .radio:focus-within .radio__label {
@@ -106,26 +106,25 @@
     width: 0;
     height: 0;
   }
-  
-  .radio-gradient input:checked + .radio__control {
-    background: radial-gradient(#765cff 50%, rgba(255, 0, 0, 0) 51%);
+
+  .radio-gradient .radio__control {
+    transition: .4s all ease-in-out;
   }
+  
+  .radio-gradient .radio__control:before {
+  content: "";
+  position: absolute;
+  margin: 5%;
+  width: 90%;
+  height: 90%;
+  background-color: transparent;
+  border-radius: 50%;
+  transition: .2s all ease-in-out;
+}
   
   .radio-before .radio__control {
     display: grid;
     place-items: center;
-  }
-  .radio-before input + .radio__control::before {
-    content: "";
-    width: 0.5em;
-    height: 0.5em;
-    box-shadow: inset 0.5em 0.5em #765cff;
-    border-radius: 50%;
-    transition: 180ms transform ease-in-out;
-    transform: scale(0);
-  }
-  .radio-before input:checked + .radio__control::before {
-    transform: scale(1);
   }
   
   .radio__control {
@@ -133,10 +132,24 @@
     width: 1em;
     height: 1em;
     border-radius: 50%;
-    border: 0.1em solid #765cff;
+    border: 0.1em solid $inputColor;
     transform: translateY(-0.05em);
   }
 
+  
+.radio-gradient.correct-answer  input + .radio__control {
+  border-color: $correctAnswer;
+}
+.radio-gradient.correct-answer  input + .radio__control:before {
+  background-color: $correctAnswer;
+}
+.radio-gradient.wrong-answer  input:checked + .radio__control {
+  border-color: $wrongAnswer;
+}
+.radio-gradient.wrong-answer  input + .radio__control:before {
+  background-color: $wrongAnswer;
+}
+
   .error-text {
-    color: #ff6a5c;
+    color: $errorText;
   }

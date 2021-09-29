@@ -32,7 +32,7 @@ export const Intro = () => {
 
     return (
         
-        <>
+        <div className="intro">
             <div className="description">
                 <h1>Automatic quiz generator</h1>
                 <p>In order for us to generate the quiz you must enter the name of your favorite movie:</p>
@@ -75,6 +75,6 @@ export const Intro = () => {
 
             </div>
             
-        </>
+        </div>
     )
 }

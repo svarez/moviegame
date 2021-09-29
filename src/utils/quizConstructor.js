@@ -1,4 +1,3 @@
-import { useHistory } from "react-router-dom";
 import { GetCredits, GetSimilar, SearchMovieByName } from "../api/ApiSelector"
 import { getRandomElements } from "./getRandomElement";
 import { getRangeOfYears } from "./getRangeOfYears";
